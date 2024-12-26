@@ -1,13 +1,13 @@
 import express from "express";
 export const app = express();
 import shortenRoutes from "./routes/shorten.js"
-//import analyticsRoutes from './routes/analytics.js';
+import analyticsRoutes from './routes/analytics.js';
 import { Url } from "./models/url.model.js";
 import { UAParser } from "ua-parser-js";
 import session from 'express-session';
 import passport from 'passport';
 import './config/passport.js'; // Passport configuration
-//import authRoutes from './routes/auth.js';
+import authRoutes from './routes/auth.js';
 import cookieParser from "cookie-parser";
 
 
@@ -18,28 +18,25 @@ app.use(express.json({limit: "16kb"}));
 app.use(express.urlencoded({extended: true, limit: "16kb"}))
 
 // Session configuration
-/*app.use(
+app.use(
     session({
-        secret: 'password123', // Replace with a strong secret
+        secret: "password123",
         resave: false,
         saveUninitialized: false,
-        cookie: { httpOnly: true,
-            secure: false
-         },
     })
 );
 
 // Initialize Passport
 app.use(passport.initialize());
 app.use(passport.session());
-*/
+
 
 // Routes
+app.use('/api/analytics/overall', analyticsRoutes);
 app.use('/api', shortenRoutes);
-//app.use('/api/analytics', analyticsRoutes);
 
 // Authentication routes
-//app.use('/auth', authRoutes);
+app.use('/auth', authRoutes);
 
 app.get("/:alias", async (req, res) => {
     const alias = req.params.alias;
@@ -75,6 +72,10 @@ app.get("/:alias", async (req, res) => {
     console.error('Error during redirect:', error);
     res.status(500).json({ error: 'Internal server error' });
    }
+});
+
+app.get('/', (req, res) => {
+    res.json({ message: 'Welcome to the URL shortener app!' });
 });
 
 /*

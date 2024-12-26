@@ -12,7 +12,7 @@ const limiter = rateLimit({
 });
 
 // Route for creating short URL
-router.post('/shorten/', limiter, createShortUrl);
+router.post('/shorten', limiter, createShortUrl);
 
 // Route for getting analytics by alias
 router.get('/analytics/:alias', getUrlAnalytics);

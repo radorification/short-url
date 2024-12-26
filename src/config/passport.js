@@ -1,4 +1,4 @@
-/*import passport from 'passport';
+import passport from 'passport';
 import { Strategy as GoogleStrategy } from 'passport-google-oauth20';
 import { User } from '../models/user.model.js';
 
@@ -14,7 +14,6 @@ passport.use(
                 let user = await User.findOne({ googleId: profile.id });
 
                 if (!user) {
-                    // Create a new user if not found
                     user = await User.create({
                         googleId: profile.id,
                         email: profile.emails[0].value,
@@ -36,7 +35,6 @@ passport.serializeUser((user, done) => {
 });
 
 passport.deserializeUser(async (id, done) => {
-    console.log('Deserializing user with ID:', id);
     try {
         const user = await User.findById(id);
         done(null, user);
@@ -44,4 +42,3 @@ passport.deserializeUser(async (id, done) => {
         done(error, null);
     }
 });
-*/
