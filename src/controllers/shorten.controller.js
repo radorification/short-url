@@ -140,4 +140,62 @@ const getUrlAnalytics = async (req, res) => {
     }
 };
 
-export {createShortUrl, getUrlAnalytics}
+const getTopicAnalytics = async (req, res) => {
+    try {
+        const { topic } = req.params;
+
+        // Find all URLs under the specified topic
+        const urls = await Url.find({ topic });
+        if (urls.length === 0) {
+            return res.status(404).json({ error: 'No URLs found for this topic' });
+        }
+
+        // Aggregate analytics for the topic
+        let totalClicks = 0;
+        let uniqueClicksSet = new Set();
+        const clicksByDate = {};
+        const urlAnalytics = [];
+
+        urls.forEach((url) => {
+            // Update total clicks and unique clicks
+            totalClicks += url.visitHistory.length;
+            url.visitHistory.forEach((entry) => uniqueClicksSet.add(entry.timestamp.toDateString()));
+
+            // Group clicks by date
+            url.visitHistory.forEach((entry) => {
+                const date = entry.timestamp.toDateString();
+                clicksByDate[date] = (clicksByDate[date] || 0) + 1;
+            });
+
+            // Prepare analytics for each URL
+            const uniqueUrlClicks = new Set(url.visitHistory.map((entry) => entry.timestamp.toDateString())).size;
+            urlAnalytics.push({
+                shortUrl: `${process.env.BASE_URL || 'http://localhost:3000'}/${url.alias}`,
+                totalClicks: url.visitHistory.length,
+                uniqueClicks: uniqueUrlClicks,
+            });
+        });
+
+        // Convert clicksByDate to an array format
+        const clicksByDateArray = Object.entries(clicksByDate).map(([date, count]) => ({
+            date,
+            count,
+        }));
+
+        res.status(200).json({
+            totalClicks,
+            uniqueClicks: uniqueClicksSet.size,
+            clicksByDate: clicksByDateArray,
+            urls: urlAnalytics,
+        });
+    } catch (error) {
+        console.error('Error fetching topic analytics:', error);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+};
+
+export {
+    createShortUrl, 
+    getUrlAnalytics,
+    getTopicAnalytics
+}
