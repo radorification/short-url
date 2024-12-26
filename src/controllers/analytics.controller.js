@@ -2,6 +2,7 @@ import { User } from '../models/user.model.js';
 
 export const getOverallAnalytics = async (req, res) => {
     try {
+        
         const user = await User.findById(req.user.id).populate('createdUrls');
         if (!user) {
             return res.status(404).json({ error: 'User not found' });

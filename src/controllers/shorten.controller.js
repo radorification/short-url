@@ -50,6 +50,16 @@ const createShortUrl = async (req, res) => {
             topic: topic || 'general',
             visitHistory
         });
+
+        // Associate the new URL with the authenticated user
+        if(req.user){
+
+            await User.findByIdAndUpdate(
+                req.user.id,
+                { $push: { createdUrls: newUrl._id } },
+                { new: true }
+            );
+        }
         
 
         res.status(201).json({
