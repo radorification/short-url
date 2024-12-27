@@ -1,6 +1,7 @@
 import express from'express';
 import { createShortUrl, getUrlAnalytics, getTopicAnalytics } from '../controllers/shorten.controller.js';
 import rateLimit from 'express-rate-limit';
+import { isAuthenticated } from '../middlewares/auth.js';
 
 const router = express.Router();
 
@@ -15,9 +16,9 @@ const limiter = rateLimit({
 router.post('/shorten', limiter, createShortUrl);
 
 // Route for getting analytics by alias
-router.get('/analytics/:alias', getUrlAnalytics);
+router.get('/analytics/:alias', isAuthenticated, getUrlAnalytics);
 
 // Route for getting topic-based analytics
-router.get('/analytics/topic/:topic', getTopicAnalytics);
+router.get('/analytics/topic/:topic', isAuthenticated, getTopicAnalytics);
 
 export default router;

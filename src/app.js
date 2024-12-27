@@ -77,15 +77,3 @@ app.get("/:alias", async (req, res) => {
 app.get('/', (req, res) => {
     res.json({ message: 'Welcome to the URL shortener app!' });
 });
-
-/*
-app.get('/api/dashboard', (req, res) => {
-    if (!req.user) {
-        return res.status(401).json({ error: 'Unauthorized' });
-    }
-    res.json({
-        message: 'Welcome to the dashboard!',
-        user: req.user,
-    });
-});
-*/

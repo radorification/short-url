@@ -1,19 +1,13 @@
 import { nanoid } from 'nanoid';
 import {Url} from '../models/url.model.js';
 import {ApiError} from "../utils/ApiError.js"
+import {User} from "../models/user.model.js"
 
 const BASE_URL = process.env.BASE_URL || 'http://localhost:3000';
 
 const createShortUrl = async (req, res) => {
     try {
         const { longUrl, customAlias, topic, visitHistory } = req.body;
-
-         // Ensure user is authenticated
-        /*
-         if (!req.user) { // <-- ADD: Check if the user is logged in
-            return res.status(401).json({ error: 'Unauthorized' }); 
-        }
-            */
 
         // Validate input
         if (!longUrl || !/^https?:\/\/.+/i.test(longUrl)) {
@@ -48,14 +42,15 @@ const createShortUrl = async (req, res) => {
             longUrl,
             alias,
             topic: topic || 'general',
-            visitHistory
+            visitHistory,
+            createdBy: req.user?._id,
         });
 
         // Associate the new URL with the authenticated user
         if(req.user){
 
             await User.findByIdAndUpdate(
-                req.user.id,
+                req.user._id,
                 { $push: { createdUrls: newUrl._id } },
                 { new: true }
             );
