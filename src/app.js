@@ -9,8 +9,26 @@ import passport from 'passport';
 import './config/passport.js'; // Passport configuration
 import authRoutes from './routes/auth.js';
 import cookieParser from "cookie-parser";
+import swaggerUi from 'swagger-ui-express';
+import swaggerJsdoc from 'swagger-jsdoc';
 
 
+const swaggerOptions = {
+    definition: {
+        openapi: '3.0.0',
+        info: {
+            title: 'URL Shortener API',
+            version: '1.0.0',
+            description: 'API documentation for the URL Shortener service',
+        },
+        servers: [{ url: 'http://localhost:5050' }],
+    },
+    apis: ['./src/routes/*.js'], // Path to API docs
+};
+
+
+const swaggerDocs = swaggerJsdoc(swaggerOptions);
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 
 //app.use('/api/analytics', analyticsRoutes);
 app.use(cookieParser());

@@ -59,8 +59,16 @@ BASE_URL=http://localhost:5050
 The app will be available at http://localhost:5050.
 
 ---
+### 3. Test the API Using Swagger
+The API is documented and testable via Swagger. Access the Swagger documentation at:
 
-### 3. Test the App in Postman
+Swagger URL: http://localhost:5050/api-docs
+
+Swagger provides a user interface where you can view all available endpoints, see detailed request/response formats, and execute API calls directly.
+
+
+---
+### 4. Test the App in Postman
 1. Authentication
 
 * Login with Google:
@@ -101,7 +109,7 @@ The app will be available at http://localhost:5050.
 
 ---
 
-### 4. Using Cookies for Authentication
+### 5. Using Cookies for Authentication
 * What Are Cookies?
 
     Cookies are used to store session information after logging in with Google. The app uses the `connect.sid` cookie to authenticate users for analytics endpoints.
@@ -126,7 +134,7 @@ Cookie: connect.sid=s%3A_wKIQk_EE-gTvAxQ4g38n4GTB2Ks9-Oc.uNZVjdp6m1Am9fv9CCpQJhi
 ```
 ---
 
-### 5. API Endpoints
+### 6. API Endpoints
 
 * Authentication
 
@@ -145,7 +153,7 @@ Cookie: connect.sid=s%3A_wKIQk_EE-gTvAxQ4g38n4GTB2Ks9-Oc.uNZVjdp6m1Am9fv9CCpQJhi
 
 ---
 
-### 6. Testing Workflow
+### 7. Testing Workflow
 
 1. Log in using `GET /auth/google`.
 2. *Retrieve the Cookie* `(connect.sid)` from the browser.
