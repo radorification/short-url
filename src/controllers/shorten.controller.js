@@ -3,7 +3,7 @@ import {Url} from '../models/url.model.js';
 import {ApiError} from "../utils/ApiError.js"
 import {User} from "../models/user.model.js"
 
-const BASE_URL = process.env.BASE_URL || 'http://localhost:3000';
+const BASE_URL = process.env.BASE_URL || 'https://ank-url-shortener.onrender.com';
 
 const createShortUrl = async (req, res) => {
     try {
