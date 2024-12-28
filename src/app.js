@@ -11,6 +11,7 @@ import authRoutes from './routes/auth.js';
 import cookieParser from "cookie-parser";
 import swaggerUi from 'swagger-ui-express';
 import swaggerJsdoc from 'swagger-jsdoc';
+import cors from "cors"
 
 
 app.use(cors({
